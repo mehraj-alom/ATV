@@ -1,0 +1,7 @@
+models:
+  Detector_model_path : "ATV/models/best.pt"
+
+
+
+inference: 
+  output_dir : "ATV/database/evidence/"
