@@ -1,0 +1,1 @@
+global_config_path = "ATV/config/global_config.yaml"  # Path to the global configuration file

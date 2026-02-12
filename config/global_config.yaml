@@ -5,3 +5,6 @@ models:
 
 inference: 
   output_dir : "ATV/database/evidence/"
+
+evidence:
+  bike_evidence_dir : "ATV/database/evidence/bike_evidence/"

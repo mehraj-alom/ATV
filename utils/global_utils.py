@@ -1,4 +1,5 @@
 import os 
+import cv2
 import yaml
 import json
 import joblib
@@ -6,11 +7,12 @@ from ensure import ensure_annotations
 from pathlib import Path 
 from typing import Any, List, Dict
 import base64
+from ATV.config import config
 from ATV.logger import logger
-
+from ATV.constants import Evidence_path
 
 @ensure_annotations
-def read_yaml(path_to_yaml: Path) -> Dict[str, Any]:
+def read_yaml(path_to_yaml: Path) -> dict:
     """reads yaml file and returns a dict
     Args:
         path_to_yaml (Path) : path like input
@@ -65,7 +67,7 @@ def save_json(path :Path, data:Dict[str, Any]):
     logger.info(f"Json file saved at {path}")
 
 @ensure_annotations
-def load_json(path: Path) -> Dict[str, Any]:
+def load_json(path: Path) -> dict:
     """load json file
     Args:
         path (Path): Path from which json file to be load 
@@ -89,3 +91,42 @@ def get_size(path: Path) -> str:
     """
     size_in_kb = round(os.path.getsize(path) / 1024)
     return f"{size_in_kb} kB"
+
+@ensure_annotations
+def read_video(video_path:str):
+    """Reads a video from the specified path and returns a list of frames.  
+    Args:
+        video_path (str): The file path to the video.
+    Returns:
+        list: A list of frames extracted from the video.    
+    """
+    
+    # option for live Video feed can be added by using cv2.VideoCapture(0)  <-- to be added 
+    # instead of video path
+
+
+    cap = cv2.VideoCapture(video_path)
+    frames = []
+    while True:
+        ret ,frame = cap.read()
+        if not ret:
+            break
+        frames.append(frame)
+    logger.info(f"Video has been read succesfully")
+    return frames
+
+@ensure_annotations
+def save_evidence(frame, filename: str , output_dir= Evidence_path):
+    """Saves a frame as an image file in the specified output directory with the given filename.
+    
+    Args:
+        frame: The video frame to be saved as an image.
+        output_dir (str): The directory where the image will be saved.
+        filename (str): The name of the image file output_dir= Evidence_path (without extension).
+    """
+    create_directories([output_dir])
+    output_path = os.path.join(output_dir, f"{filename}.jpg")
+    cv2.imwrite(output_path, frame)
+    logger.info(f"Evidence saved at {output_path}")  # <-- to be added The track details 
+                                                     # such as track id, timestamp, and bounding box
+                                                     #  coordinates can be included in the log message for better traceability.

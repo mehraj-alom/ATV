@@ -17,7 +17,7 @@ logging.basicConfig(
     ]
 )
 
-logger = logging.getLogger("Classifier")
+logger = logging.getLogger("ATV_Logger")
 logger.info("Logging system initialized")
 
 __all__ = ["logger"]

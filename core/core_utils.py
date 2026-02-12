@@ -2,7 +2,7 @@ from pathlib import Path
 import json
 
 import torch
-from logger import logger
+from ATV.logger import logger
 import torch
 import yaml 
 from yaml.loader import SafeLoader
